@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
+import { motion } from "framer-motion";
 
 function ResultPage() {
   const { username } = useParams();
@@ -53,60 +54,62 @@ function ResultPage() {
 
   return (
     <>
-      <section className="result-box flex flex-column center">
-        <div className="flex flex-column center gap-10">
-          <img src={userData.avatar_url} alt="avatar" />
-          <h1>{userData.name}</h1>
-          <div className="flex gap-10">
-            <div className="flex flex-column center gap-10">
-              <span>{repos.length}</span>
-              <span className="uppercase">Repositories</span>
+      <motion.main>
+        <section className="result-box flex flex-column center">
+          <div className="flex flex-column center gap-10">
+            <img src={userData.avatar_url} alt="avatar" />
+            <h1>{userData.name}</h1>
+            <div className="flex gap-10">
+              <div className="flex flex-column center gap-10">
+                <span>{repos.length}</span>
+                <span className="uppercase">Repositories</span>
+              </div>
+              <div className="flex flex-column center gap-10">
+                <span>{userData.followers}</span>
+                <span className="uppercase">Followers</span>
+              </div>
+              <div className="flex flex-column center gap-10">
+                <span>{userData.following}</span>
+                <span className="uppercase">Following</span>
+              </div>
             </div>
-            <div className="flex flex-column center gap-10">
-              <span>{userData.followers}</span>
-              <span className="uppercase">Followers</span>
-            </div>
-            <div className="flex flex-column center gap-10">
-              <span>{userData.following}</span>
-              <span className="uppercase">Following</span>
+            <div className="link center">
+              <a
+                href={userData.html_url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div className="link">Visit Profile</div>
+              </a>
             </div>
           </div>
-          <div className="link center">
-            <a
-              href={userData.html_url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <div className="link">Visit Profile</div>
-            </a>
-          </div>
-        </div>
-        {console.log(repos)}
-        <div className="repos-list">
-          <h2>Repositories:</h2>
-          {repos &&
-            repos
-              .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
-              .map((repo) => (
-                <div key={repo.id} className="repo-container">
-                  <div className="flex justify-between">
-                    <a
-                      href={repo.html_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="repo-name"
-                    >
-                      {repo.name}
-                    </a>
-                    <span className="repo-date">
-                      Updated at {formatDate(repo.updated_at)}
-                    </span>
+          {console.log(repos)}
+          <div className="repos-list">
+            <h2>Repositories:</h2>
+            {repos &&
+              repos
+                .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
+                .map((repo) => (
+                  <div key={repo.id} className="repo-container">
+                    <div className="flex justify-between">
+                      <a
+                        href={repo.html_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="repo-name"
+                      >
+                        {repo.name}
+                      </a>
+                      <span className="repo-date">
+                        Updated at {formatDate(repo.updated_at)}
+                      </span>
+                    </div>
+                    <p>{repo.description}</p>
                   </div>
-                  <p>{repo.description}</p>
-                </div>
-              ))}
-        </div>
-      </section>
+                ))}
+          </div>
+        </section>
+      </motion.main>
     </>
   );
 }
